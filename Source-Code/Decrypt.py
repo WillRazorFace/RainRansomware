@@ -7,7 +7,6 @@ try:
 	import platform
 	from os import getenv,system
 except:
-	print('An error ocurred.')
 	exit()
 
 def decrypt(file):
