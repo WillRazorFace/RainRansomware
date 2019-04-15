@@ -1,6 +1,5 @@
 """
-source: https://eli.thegreenplace.net/2010/06/25/aes-encryption-of-files-in-python-with-pycrypto/
-minor changes for compatibility with 3.7
+Minor changes for compatibility with 3.7
 """
 import os
 import struct
@@ -22,7 +21,7 @@ class Crypto:
     @staticmethod
     def __derive_key(password):
         """
-        derives cryptographic key using pbkdf2 key derivation scheme
+        Derives cryptographic key using pbkdf2 key derivation scheme
         salt = sha3_256 digest of password string, 16 bytes as recommended
         """
         salt = hashlib.sha3_256(password.encode()).digest()

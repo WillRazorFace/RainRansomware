@@ -3,8 +3,6 @@ import os
 from os import scandir
 import types
 
-BLOCK_SIZE = 65536
-
 
 class DirectoryIter:
     """
@@ -33,4 +31,3 @@ class DirectoryIter:
         for root, dirs, files in os.walk(self.path):
             for dir in dirs:
                 yield os.path.join(root, dir)
-

