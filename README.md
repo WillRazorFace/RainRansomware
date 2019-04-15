@@ -26,6 +26,7 @@ TODO's/Considerations:
  - I haven't got round to testing the scripts so I’m not sure how well it will work but the added classes have been toughly tested and work as intended.
  - When I get a chance, I'll build a exe using pyinstaller
  - Two functions in the RainDecrypt are incomplete I’ll leave them to you
+ - Use a IDE something like PyCharm it helps to keep your code tidy and types consistent
  
 I was kinda board so decide to commit to your project. Any issues or features you want to add let me know.
 
