@@ -1,5 +1,5 @@
-from thatkill import Crypt
-from thatkill import k
+from func import Crypt
+from func import k
 import os
 import platform
 import shutil
