@@ -5,7 +5,7 @@ import platform
 import shutil
 from winreg import *
 
-mc = platform.system()
+s = platform.system()
 
 if mc=='Windows':
 	try:
