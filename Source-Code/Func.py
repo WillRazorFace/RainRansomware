@@ -162,11 +162,18 @@ class Decrypt:
 		global k
 		if mc=='Windows':
 			try:
+				sys('attrib -s -h '+documents+'/.officek')
 				ke = open(documents+'/.officek','rb')
 				k = ke.read()
 				ke.close()
 			except:
-				exit()
+				try:
+					sys('attrib -s -h C:/Users/Public/.officek')
+					ke = open('C:/Users/Public/.officek','rb')
+					k = ke.read()
+					ke.close()
+				except:
+					exit()
 		elif mc=='Linux':
 			try:
 				ke = open(documents+'/.officek','rb')

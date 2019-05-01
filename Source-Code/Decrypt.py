@@ -9,8 +9,9 @@ s = system()
 if s=='Windows':
 	try:
 		appdata = getenv('APPDATA')
-		dest = appdata+"\\Microsoft\\Windows\\Themes"
-		copyfile(dest+'\\.transold',dest+'\\TranscodedWallpaper')
+		dest = appdata+"/Microsoft/Windows/Themes"
+		sys('attrib -s -h '+dest+'/.transold')
+		copyfile(dest+'/.transold',dest+'/TranscodedWallpaper')
 		sys("taskkill /f /im explorer.exe")
 		sys("start C:/Windows/explorer.exe")
 	except:
@@ -26,9 +27,12 @@ if s=='Windows':
 		key = OpenKey(HKEY_LOCAL_MACHINE,keypath,KEY_ALL_ACCESS)
 		DeleteValue(key,'AdobeAAM')
 	except PermissionError:
-		keypath = r'Software\Microsoft\Windows\CurrentVersion\Run'
-		key = OpenKey(HKEY_LOCAL_MACHINE,keypath,KEY_ALL_ACCESS)
-		DeleteValue(key,'AdobeAAM')
+		try:
+			keypath = r'Software\Microsoft\Windows\CurrentVersion\Run'
+			key = OpenKey(HKEY_LOCAL_MACHINE,keypath,KEY_ALL_ACCESS)
+			DeleteValue(key,'AdobeAAM')
+		except:
+			pass
 
 	Decrypt.getkey()
 
