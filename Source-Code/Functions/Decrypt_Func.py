@@ -84,7 +84,7 @@ class Decrypt:
 					Decrypt.decrypt(file)
 
 	def getkey(documents):
-		#Function used to collect the key used for the encryption of files. I think we need a better process.
+		#Function used to collect the key used for the encryption of files. I think we need a better process
 		global k,aes
 		if s=='Windows':
 			try:
