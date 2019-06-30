@@ -1,11 +1,10 @@
-from Func import Decrypt
+from Decrypt_Func import Decrypt
+from Decrypt_Func import s
 from os import path,getenv,remove
 from os import system as sys
-from platform import system
 from shutil import copyfile
 from winreg import *
 
-s = system()
 if s=='Windows':
 	try:
 		appdata = getenv('APPDATA')
@@ -36,53 +35,29 @@ if s=='Windows':
 
 	Decrypt.getkey()
 
-	try:
-		desktop = path.expanduser('~/Desktop')
-	except:
-		pass
-	try:
-		documents = path.expanduser('~/Documents')
-	except:
-		pass
-	try:
-		downloads = path.expanduser('~/Downloads')
-	except:
-		pass
+	desktop = path.expanduser('~/Desktop')
+	documents = path.expanduser('~/Documents')
+	downloads = path.expanduser('~/Downloads')
 
-	Decrypt.decryptingcommon(desktop)
-	Decrypt.decryptingcommon(downloads)
-	Decrypt.decryptingcommon(documents)
+	Decrypt.d_iterator(desktop)
+	Decrypt.d_iterator(downloads)
+	Decrypt.d_iterator(documents)
 
 	Decrypt.cureall()
 
 elif s=='Linux':
 	Decrypt.getkey()
 
-	try:
-		desktop = path.expanduser('~/Desktop')
-	except:
-		pass
-	try:
-		documents = path.expanduser('~/Documents')
-	except:
-		pass
-	try:
-		downloads = path.expanduser('~/Downloads')
-	except:
-		pass
-	try:
-		area = path.expanduser('~/Área de trabalho')
-	except:
-		pass
-	try:
-		documentos = path.expanduser('~/Documentos')
-	except:
-		pass
+	desktop = path.expanduser('~/Desktop')
+	documents = path.expanduser('~/Documents')
+	downloads = path.expanduser('~/Downloads')
+	area = path.expanduser('~/Área de trabalho')
+	documentos = path.expanduser('~/Documentos')
 
-	Decrypt.decryptingcommon(desktop)
-	Decrypt.decryptingcommon(downloads)
-	Decrypt.decryptingcommon(documents)
-	Decrypt.decryptingcommon(area)
-	Decrypt.decryptingcommon(documentos)
+	Decrypt.d_iterator(desktop)
+	Decrypt.d_iterator(downloads)
+	Decrypt.d_iterator(documents)
+	Decrypt.d_iterator(area)
+	Decrypt.d_iterator(documentos)
 
 	Decrypt.cureall()
