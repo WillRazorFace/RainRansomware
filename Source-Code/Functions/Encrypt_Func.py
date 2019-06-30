@@ -65,7 +65,7 @@ class Crypt:
 					Crypt.crypt(file)
 
 	def resource_path(relative_path):
-		#Here is just a fix so there are no compile errors with certain librarie
+		#Here is just a fix so there are no compile errors with certain libraries
 		if hasattr(sys, '_MEIPASS'):
 			return os.path.join(sys._MEIPASS, relative_path)
 		return os.path.join(os.path.abspath("."), relative_path)
