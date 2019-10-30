@@ -1,18 +1,14 @@
 from Functions.Decrypt_Func import Decrypt
 from Functions.Decrypt_Func import s
+from ctypes import windll
 from os import path,getenv,remove
-from os import system as sys
 from shutil import copyfile
 from winreg import *
 
 if s=='Windows':
 	try:
 		appdata = getenv('APPDATA')
-		dest = appdata+"/Microsoft/Windows/Themes"
-		sys('attrib -s -h '+dest+'/.transold')
-		copyfile(dest+'/.transold',dest+'/TranscodedWallpaper')
-		sys("taskkill /f /im explorer.exe")
-		sys("start C:/Windows/explorer.exe")
+		windll.user32.SystemParametersInfoW(20,0,appdata+'/Microsoft/Windows/Themes/.transold',0)
 	except:
 		pass
 

