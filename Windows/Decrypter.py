@@ -65,7 +65,7 @@ class Decrypt:
                 CloseKey(key)
             except FileNotFoundError:
                 return 1
-            except FileNotFoundError:
+        except FileNotFoundError:
                 key = OpenKey(HKEY_CURRENT_USER, keypath, access=KEY_ALL_ACCESS)
                 try:
                     DeleteValue(key, name)
