@@ -12,7 +12,7 @@ Rain is Python-made Ransomware that uses 32-byte AES encryption
 
 ## Future features
 
-Decryption codes, executable files, a graphical interface and , perhaps, in a while, an online payment verification system will be added.
+Executable files, a graphical interface and , perhaps, in a while, an online payment verification system will be added.
 
 ## Contact
 
