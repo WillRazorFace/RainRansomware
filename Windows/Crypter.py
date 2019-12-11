@@ -23,18 +23,28 @@ class Crypt:
         self.background = background
         self.save_randomkey()
 
-    def crypt_file(self, file: str):
+    def crypt_file(self, file: str, chunksize=64*2048):
         # Encrypt a file using AES CBC MODE with the given key
-        with open(file, 'rb') as f:
-            data = f.read()
-        filename = splitext(file)[0]
-        extension = (splitext(file)[1]+'.').encode()
+        out_file = splitext(file)[0] + self.out_ext
+        ext = (splitext(file)[1].strip('.') + '.').encode()
+        fsz = getsize(file)
         iv = new().read(AES.block_size)
         encryptor = AES.new(self.key, AES.MODE_CBC, iv)
-        data = data+b'#'*(16-len(data) % 16)
-        dataenc = encryptor.encrypt(data)
-        with open(filename+self.out_ext, 'wb') as f:
-            f.write(extension+dataenc)
+
+        with open(out_file, 'wb') as encrypted:
+            encrypted.write(ext)
+            encrypted.write(pack('<Q', fsz))
+            encrypted.write(iv)
+            with open(file, 'rb') as original:
+                while True:
+                    data = original.read(chunksize)
+                    n = len(data)
+                    if n == 0:
+                        break
+                    elif n % 16 != 0:
+                        data += b' ' * (16 - n % 16)
+                    dataenc = encryptor.encrypt(data)
+                    encrypted.write(dataenc)
         remove(file)
         return 0
 
