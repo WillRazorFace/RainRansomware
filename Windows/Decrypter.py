@@ -54,20 +54,20 @@ class Decrypt:
         return 0
 
     def delete_registry(self, keypath: str, name: str):
-        key = OpenKey(HKEY_LOCAL_MACHINE, keypath, access=KEY_ALL_ACCESS)
         try:
+            key = OpenKey(HKEY_LOCAL_MACHINE, keypath, access=KEY_ALL_ACCESS)
             DeleteValue(key, name)
             CloseKey(key)
         except PermissionError:
-            key = OpenKey(HKEY_CURRENT_USER, keypath, access=KEY_ALL_ACCESS)
             try:
+                key = OpenKey(HKEY_CURRENT_USER, keypath, access=KEY_ALL_ACCESS)
                 DeleteValue(key, name)
                 CloseKey(key)
             except FileNotFoundError:
                 return 1
         except FileNotFoundError:
-                key = OpenKey(HKEY_CURRENT_USER, keypath, access=KEY_ALL_ACCESS)
                 try:
+                    key = OpenKey(HKEY_CURRENT_USER, keypath, access=KEY_ALL_ACCESS)
                     DeleteValue(key, name)
                     CloseKey(key)
                 except FileNotFoundError:
