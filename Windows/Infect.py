@@ -18,6 +18,7 @@ from shutil import copyfile
 """
 
 exts = ['*.php',
+        '*.md',
         '*.pl',
         '*.7z',
         '*.rar',
