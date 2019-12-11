@@ -1,12 +1,13 @@
 from Crypto.Cipher import AES
 from Crypto.Random import new
-from os.path import splitext
+from os.path import splitext, getsize
 from os import remove
 from shutil import copyfile
 from ctypes import windll
 from winreg import *
 from glob import iglob
 from bitstring import BitArray
+from struct import pack
 
 
 class Crypt:
