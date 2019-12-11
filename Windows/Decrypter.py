@@ -113,7 +113,6 @@ class Decrypt:
         with open(file, 'rb') as fin:
             fsz = unpack('<Q', fin.read(calcsize('<Q')))[0]
             iv = fin.read(16)
-
             decryptor = AES.new(self.key, AES.MODE_CBC, iv)
 
             with open(originalpath, 'wb') as fout:
