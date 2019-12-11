@@ -11,6 +11,7 @@ from string import ascii_uppercase
     desktop : path to the user's desktop (if there is)
     documents : path to the user documents (if there is)
     downloads : path to the user downloads (if there is)
+    onedrive : path to the user onedrive (if there is)
     appdata : path to the user's AppData
 """
 
@@ -27,17 +28,19 @@ decrypto = Decrypt()
 desktop = expanduser('~/Desktop')
 downloads = expanduser('~/Downloads')
 documents = expanduser('~/Documents')
+onedrive = expanduser('~/OneDrive')
 appdata = getenv('APPDATA')
 
 # Removes Run's registry created to start Rain at system boot
 
 decrypto.delete_registry(r'SOFTWARE\Microsoft\Windows\CurrentVersion\Run', 'Rain')
 
-# Decrypt user's desktop, documents, downloads and restore the desktop background
+# Decrypt user's desktop, documents, downloads, onedrive and restore the desktop background
 
 decrypto.decrypt_directory(desktop)
-decrypto.decrypt_directry(downloads)
-decrypto.decrypt_directry(documents)
+decrypto.decrypt_directory(downloads)
+decrypto.decrypt_directory(documents)
+decrypto.decrypt_directory(onedrive)
 
 decrypto.restore_background(appdata)
 
