@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# Rain's encryption functions
+# Developed by WillRazorFace
+
 from Crypto.Cipher import AES
 from Crypto.Random import new
 from os.path import splitext, getsize
