@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# Rain's decryption functions
+# Developed by WillRazorFace
+
 from Crypto.Cipher import AES
 from winreg import *
 from shutil import copyfile
