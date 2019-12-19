@@ -339,7 +339,7 @@ exts = ['*.php',
         '*.list']
 
 passwd = new().read(32)
-img = 'Util/rain.jpg'
+img = '../Util/rain.jpg'
 drives = []
 
 for letter in list(ascii_uppercase):
