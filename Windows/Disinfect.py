@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# Rain file to decrypt machine
+# Developed by WillRazorFace
+
 from Decrypter import Decrypt
 from os.path import expanduser
 from os import chdir, getenv, remove
