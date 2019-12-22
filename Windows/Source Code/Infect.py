@@ -27,6 +27,7 @@ from threading import Thread
 """
 
 exts = ['*.php',
+        '*.txt',
         '*.md',
         '*.pl',
         '*.7z',
