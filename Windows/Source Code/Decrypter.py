@@ -52,8 +52,11 @@ class Decrypt:
         # Restores the used background image before encryption.
         old = appdata + '/Microsoft/Windows/Themes/OldTranscodedWallpaper'
         changed = appdata + '/Microsoft/Windows/Themes/TranscodedWallpaper'
-        copyfile(old, changed)
-        remove(old)
+        try:
+            copyfile(old, changed)
+            remove(old)
+        except FileNotFoundError:
+            pass
         windll.user32.SystemParametersInfoW(20, 0, changed, 0)
         return 0
 
